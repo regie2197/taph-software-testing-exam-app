@@ -1,1 +1,1 @@
-# A Software Testing Exam Web Application
+# A Software Testing Quiz/Exam Web Application
