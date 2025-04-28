@@ -1,0 +1,71 @@
+name: TAPH Quiz and Exam App Production Deployment
+description: Deploys the quiz and exam app to Vercel
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  SUPA_PROJ_URL: ${{ secrets.SUPA_PROJ_URL }}
+  SUPA_API_KEY: ${{ secrets.SUPA_API_KEY }}
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  Deploy-Production:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: taph-quiz-app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20 # use stable Node.js 20 LTS (instead of 22.14.0)
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build Client Application
+        run: npm run build
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Run Vercel Build
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Project Artifacts and Capture URL
+        id: deploy
+        run: |
+          DEPLOYMENT_URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} | grep -o 'https://[^ ]*')
+          echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
+
+      - name: Send Discord Notification (Deployment Success)
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{
+            "username": "Quiz App BOT",
+            "content": "🚀 **Deployment Successful!**\nProduction URL: ${{ env.DEPLOYMENT_URL }}"
+          }' ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - name: Send Discord Notification (Deployment Failed)
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{
+            "username": "Quiz App BOT",
+            "content": "❌ **Deployment Failed!**"
+          }' ${{ secrets.DISCORD_WEBHOOK_URL }}
