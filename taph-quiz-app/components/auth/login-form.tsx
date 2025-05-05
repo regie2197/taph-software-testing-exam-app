@@ -45,13 +45,13 @@ export function LoginForm() {
     try {
       setLoading(true)
       setError(null)
-      
+
       // Check if the identifier is an email
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       const isEmail = emailRegex.test(data.identifier)
-      
+
       let loginEmail = data.identifier
-      
+
       // If it's not an email, treat it as a username and look up the email
       if (!isEmail) {
         const { data: userProfile, error: profileError } = await supabase
@@ -59,41 +59,41 @@ export function LoginForm() {
           .select('email')
           .eq('username', data.identifier)
           .single()
-        
+
         if (profileError || !userProfile) {
           throw new Error('Invalid username or password')
         }
-        
+
         if (!userProfile.email) {
           throw new Error('Account configuration issue. Please contact support.')
         }
-        
+
         // Use the email we found for login
         loginEmail = userProfile.email
       }
-      
+
       // Attempt login with the email
       const result = await supabase.auth.signInWithPassword({
         email: loginEmail,
         password: data.password,
       })
-      
+
       if (result.error) {
         // Use a generic message for security
         throw new Error('Invalid username/email or password')
       }
-      
+
       // Get user role after successful login
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('role')
         .eq('id', result.data.user.id)
         .single()
-      
+
       if (profileError) {
         throw new Error('Error loading user profile')
       }
-      
+
       // Honor the redirect parameter if it exists, otherwise use role-based redirect
       if (redirectPath && redirectPath !== '/dashboard') {
         router.push(redirectPath)
@@ -105,7 +105,7 @@ export function LoginForm() {
           router.push('/topics')
         }
       }
-      
+
       router.refresh()
     } catch (err: any) {
       setError(err.message || 'Login failed. Please try again.')
@@ -148,14 +148,9 @@ export function LoginForm() {
         </div>
 
         <div>
-          <div className="flex justify-between">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <Link href="/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-500">
-              Forgot your password?
-            </Link>
-          </div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            Password
+          </label>
           <input
             id="password"
             data-testid="input-password"
@@ -167,6 +162,12 @@ export function LoginForm() {
           {errors.password && (
             <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
           )}
+          <div className="flex justify-between">
+
+            <Link href="/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-500 mt-2">
+              Forgot your password?
+            </Link>
+          </div>
         </div>
 
         <div>

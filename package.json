@@ -1,4 +1,11 @@
 {
+  "name": "cypress-test-taph-quiz-app",
+  "version": "1.0.0",
+  "description": "Cypress Test Automation for TAPH Software Testing Exam App",
+  "author": "Reginald P. Offemaria",
+  "scripts": {
+    "nav-test": "npx cypress run --spec 'cypress/e2e/smoke-testing/navigation.cy.js'"
+  },
   "devDependencies": {
     "cypress": "^14.3.2"
   }

@@ -1,0 +1,14 @@
+{
+    "quizMaster": {
+      "username": "quizMaster",
+      "password": "regietest",
+      "redirectUrl": "/manage-topics",
+      "role": "quizMaster"
+    },
+    "regularUser": {
+      "username": "regularUser01",
+      "password": "regietest",
+      "redirectUrl": "/topics",
+      "role": "regularUser"
+    }
+  }
