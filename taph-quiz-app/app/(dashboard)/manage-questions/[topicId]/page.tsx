@@ -38,7 +38,7 @@ function QuestionsListSkeleton() {
 }
 
 async function TopicHeader({ topicId }: { topicId: string }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   const { data: topic, error } = await supabase
     .from('topics')
@@ -85,7 +85,7 @@ async function TopicHeader({ topicId }: { topicId: string }) {
 }
 
 async function QuestionsList({ topicId }: { topicId: string }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // Check if user is authenticated and is a quiz master
   const { data: { user }, error: authError } = await supabase.auth.getUser()

@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import TopicForm from '@/components/topics/topic-form'
 
 export default async function CreateTopicPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // Check if user is authenticated and is a quiz master
   const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -27,7 +27,7 @@ export default async function CreateTopicPage() {
   async function createTopic(formData: FormData) {
     'use server'
     
-    const supabase = createClient()
+    const supabase = await createClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
     if (userError || !user) {

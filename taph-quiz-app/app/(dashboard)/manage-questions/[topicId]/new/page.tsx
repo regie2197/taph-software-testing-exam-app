@@ -8,7 +8,7 @@ export default async function NewQuestionPage({ params }: { params: Promise<{ to
   const { topicId } = await params;
 
   
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // Authorization check
   const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -46,7 +46,7 @@ export default async function NewQuestionPage({ params }: { params: Promise<{ to
   async function createQuestion(formData: FormData) {
     'use server'
 
-    const supabase = createClient()
+    const supabase = await createClient()
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) {

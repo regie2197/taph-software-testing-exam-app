@@ -24,7 +24,7 @@ export default async function EditTopicPage({ params }: { params: Promise<{ topi
 }
 
 async function EditTopicForm({ topicId }: { topicId: string }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // Check if user is authenticated and is a quiz master
   const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -63,7 +63,7 @@ async function EditTopicForm({ topicId }: { topicId: string }) {
   async function updateTopic(formData: FormData) {
     'use server'
     
-    const supabase = createClient()
+    const supabase = await createClient()
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     
     if (userError || !user) {

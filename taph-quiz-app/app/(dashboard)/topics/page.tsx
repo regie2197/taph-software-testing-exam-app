@@ -24,7 +24,7 @@ export default function TopicsPage() {
 }
 
 async function TopicsList() {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // Get only published topics
   const { data: topics, error: topicsError } = await supabase

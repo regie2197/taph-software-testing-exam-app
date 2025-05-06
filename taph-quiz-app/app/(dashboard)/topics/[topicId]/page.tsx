@@ -24,7 +24,7 @@ export default async function TopicDetailsPage({
 }
 
 async function TopicDetails({ topicId, isPreview }: { topicId: string, isPreview: boolean }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // Check authentication
   const { data: { user } } = await supabase.auth.getUser()

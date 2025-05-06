@@ -33,7 +33,7 @@ export default async function EditQuestionPage({
 }
 
 async function EditQuestionForm({ topicId, questionId }: { topicId: string, questionId: string }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // Check if user is authenticated and is a quiz master
   const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -108,7 +108,7 @@ async function EditQuestionForm({ topicId, questionId }: { topicId: string, ques
   async function updateQuestion(formData: FormData) {
     'use server'
     
-    const supabase = createClient()
+    const supabase = await createClient()
     
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) {

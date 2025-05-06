@@ -4,9 +4,16 @@
   "description": "Cypress Test Automation for TAPH Software Testing Exam App",
   "author": "Reginald P. Offemaria",
   "scripts": {
-    "nav-test": "npx cypress run --spec 'cypress/e2e/smoke-testing/navigation.cy.js'"
+    "app-build-start": "cd taph-quiz-app && npm run build && npm run start -- -p 1437",
+    "cy-qa": "npx cypress open --config-file qa.config.js",
+    "cy-prod": "npx cypress open --config-file prod.config.js",
+    "registration-test-prod": "npx cypress run --config-file prod.config.js --spec 'cypress/e2e/regression-testing/registration.cy.js' --browser chrome",
+    "registration-test-qa": "npx cypress run --config-file qa.config.js --spec 'cypress/e2e/regression-testing/registration.cy.js' --browser chrome",
+    "nav-qm-test-prod": "npx cypress run --config-file prod.config.js --spec 'cypress/e2e/smoke-testing/navigation-quiz-master.cy.js' --browser chrome",
+    "nav-qm-test-qa": "npx cypress run --config-file qa.config.js --spec 'cypress/e2e/smoke-testing/navigation-quiz-master.cy.js' --browser chrome"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.7.0",
     "cypress": "^14.3.2"
   }
 }

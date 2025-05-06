@@ -46,7 +46,7 @@ function TopicsListSkeleton() {
 }
 
 async function TopicsList() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Check if user is authenticated and is a quiz master
   const { data: { user }, error: authError } = await supabase.auth.getUser()

@@ -25,10 +25,10 @@ export default function Dashboard() {
 }
 
 async function DashboardContent() {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // Get the current user
-  const { data: { user }, error: userError } = await supabase.auth.getUser()
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
   
   if (userError || !user) {
     return (
@@ -64,7 +64,7 @@ async function DashboardContent() {
 }
 
 async function QuizMasterDashboard({ userId }: { userId: string }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // Get topics created by quiz master
   const { data: createdTopics, error: topicsError } = await supabase
@@ -144,7 +144,7 @@ async function QuizMasterDashboard({ userId }: { userId: string }) {
 }
 
 async function UserDashboard({ userId }: { userId: string }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // Get recent quiz attempts for regular users
   const { data: recentAttempts, error: attemptsError } = await supabase
